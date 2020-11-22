@@ -36,14 +36,11 @@ export class UserService {
   }
 
   async getUserById(id) {
-    console.log('UserService -> getUserById -> id', id);
     const user = await this.userModel.find({
       where: {
         id: id,
       },
     });
-
-    console.log('UserService -> getUserById -> user', user);
     return user;
   }
 
@@ -61,10 +58,7 @@ export class UserService {
     // );
 
     const aaa = await axios.get('http://www.baidu.com');
-    console.log(
-      '🚀 ~ file: user.ts ~ line 68 ~ UserService ~ getOpenIdByCode ~ aaa',
-      aaa
-    );
+    console.log('🚀 ', aaa);
     return aaa;
   }
 }
