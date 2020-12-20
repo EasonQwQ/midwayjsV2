@@ -1,14 +1,14 @@
 import { Config, Inject, Provide } from '@midwayjs/decorator';
 import { InjectEntityModel } from '@midwayjs/orm';
-import { User } from './../entity/user';
+import { Order } from './../entity/order';
 import { IUserOptions } from '../interface';
 import { Repository } from 'typeorm';
 const axios = require('axios');
 import { Context } from 'egg';
 @Provide()
-export class UserService {
-  @InjectEntityModel(User)
-  userModel: Repository<User>;
+export class OrderService {
+  @InjectEntityModel(Order)
+  userModel: Repository<Order>;
 
   @Config()
   weapp;
@@ -26,10 +26,9 @@ export class UserService {
   }
 
   async addUser() {
-    const user = new User();
-    user.openid = '123';
+    const user = new Order();
+    user.orderId = '123';
     const res = await this.userModel.save(user);
-
     return res;
   }
 
@@ -52,36 +51,5 @@ export class UserService {
       `https://api.weixin.qq.com/sns/jscode2session?appid=${weapp.appId}&secret=${weapp.secret}&js_code=${code}&grant_type=authorization_code`
     );
     return openIdFormWechat;
-  }
-
-  /**
-   * 查询这个openid 有的话返回这个user 没有的话创建
-   * @param openid
-   */
-  async findOrCreate(openid) {
-    const user = await this.userModel.findOne({ where: { openid } });
-    if (user) {
-      return user;
-    } else {
-      const newUser = new User();
-      newUser.openid = openid;
-      const tempUser = await this.userModel.save(newUser);
-      if (tempUser) {
-        return tempUser;
-      } else {
-        throw new Error('生成user错误');
-      }
-    }
-  }
-
-  /**
-   * 更新用户的详细信息
-   * @param userDetail 用户的详细信息
-   */
-  async updateUserDetail(uid: number, userDetail: object) {
-    const userToUpdate = await this.userModel.findOne(uid);
-    userToUpdate.userDetail = userDetail;
-    const res = await this.userModel.save(userToUpdate);
-    return res;
   }
 }

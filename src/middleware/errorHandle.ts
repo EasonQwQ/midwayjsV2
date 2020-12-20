@@ -14,6 +14,12 @@ export class ErrorHandle implements IWebMiddleware {
             code: 401,
             massage: '请登录后再进行操作',
           };
+        } else {
+          ctx.status = 500;
+          ctx.body = {
+            code: 500,
+            massage: err.name,
+          };
         }
       }
     };

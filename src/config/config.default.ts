@@ -17,7 +17,7 @@ export default (appInfo: EggAppInfo) => {
   config.jwt = {
     enable: true,
     secret: 'test123456',
-    ignore: ['/user/'],
+    ignore: ['/login', '/swagger-ui'],
   };
   config.authToken = {
     whiteUrls: ['/user/login', '/url', '/login'],
@@ -37,7 +37,7 @@ export default (appInfo: EggAppInfo) => {
 
   config.weapp = {
     appId: 'wx286307c0099d09d7',
-    secret: 'b5f53c1164995b5e0b56a9711ede3d6d',
+    secret: '402e6c66d21c6a47bc5aa485a2a52441',
   };
 
   config.cos = {
@@ -47,8 +47,17 @@ export default (appInfo: EggAppInfo) => {
     Region: 'ap-nanjing',
   };
 
+  config.mianbaoduo = {
+    xToken: '381445:1kk3FH:VNUCPq6PTlHxgBh7HNSX-5LuxLw',
+  };
+
+  config.systemConfig = {
+    imageBaseUrl: 'https://outdoor-1255632723.cos.ap-nanjing.myqcloud.com',
+  };
+
   config.onerror = {
     all(err, ctx) {
+      console.log('url: ', ctx.request.url);
       console.log('all -> err', err);
       if ((err.status + '').startsWith('4')) {
         ctx.body = 'UnauthorizedError 授权错误';

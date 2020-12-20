@@ -5,8 +5,4 @@ export default {
     enable: true,
     package: 'egg-jwt',
   },
-  http: {
-    enable: true,
-    package: 'egg-axios',
-  },
 } as EggPlugin;

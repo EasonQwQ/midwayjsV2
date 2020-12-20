@@ -1,42 +1,32 @@
 import {
   Inject,
   Controller,
-  Post,
   Provide,
   Get,
-  Plugin,
+  Put,
   Body,
 } from '@midwayjs/decorator';
+// import { CreateApiDoc } from '@midwayjs/swagger';
 import { Context } from 'egg';
 import { UserService } from '../service/user';
 @Provide()
-@Controller('/user')
+@Controller('/user', { tagName: 'User', description: '关于用户信息的操作' })
 export class UserController {
   @Inject()
   ctx: Context;
 
-  @Plugin()
-  jwt;
-
-  @Plugin()
-  http;
-
   @Inject()
   userService: UserService;
 
-  @Post('/login')
-  async loginByCode(@Body('code') code: string) {
-    const openid = await this.userService.getOpenIdByCode(code);
-    console.log('UserController -> loginByCode -> openid', openid);
-    this.ctx.body = {
-      token: this.jwt.sign({ name: 'tome' }),
-    };
-  }
-
   @Get('/')
   async getUser() {
-    this.ctx.body = {
-      data: this.ctx.state.user,
-    };
+    return { code: 1, data: this.ctx.state.user };
+  }
+
+  @Put('/')
+  async updateUserInfo(@Body() userDetail: object) {
+    const uid = this.ctx.state.user.id;
+    const user = await this.userService.updateUserDetail(uid, userDetail);
+    console.log('user: ', user);
   }
 }

@@ -5,7 +5,7 @@ import {
   Provide,
   Query,
   Get,
-  Param,
+  Config,
 } from '@midwayjs/decorator';
 import { Context } from 'egg';
 import { UserService } from '../service/user';
@@ -19,6 +19,9 @@ export class APIController {
   @Inject()
   userService: UserService;
 
+  @Config()
+  systemConfig;
+
   @Post('/get_user')
   async getUser(@Query() uid) {
     const user = await this.userService.getUser({ uid });
@@ -31,9 +34,14 @@ export class APIController {
     return { success: true, message: 'ok', data: user };
   }
 
-  @Get('/:id')
-  async getUserById(@Param() id: number) {
-    const res = await this.userService.getUserById(id);
-    return { success: true, message: 'ok', data: res };
+  @Get('/config')
+  async getConfig() {
+    return { code: 1, data: this.systemConfig };
   }
+
+  // @Get('/:id')
+  // async getUserById(@Param() id: number) {
+  //   const res = await this.userService.getUserById(id);
+  //   return { success: true, message: 'ok', data: res };
+  // }
 }

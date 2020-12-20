@@ -4,16 +4,19 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
+  // eslint-disable-next-line node/no-extraneous-import
 } from 'typeorm';
-import { ActivityRecord } from './activityRecord';
+
 @EntityModel()
-export class User {
+export class PointFlow {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
-  openid: string;
+  @Column()
+  uid: number;
+
+  @Column()
+  orderId: string;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -27,21 +30,12 @@ export class User {
   })
   updateDate: Date;
 
-  @Column({ default: 0 })
+  @Column({ nullable: true })
   point: number;
 
   @Column({ nullable: true })
+  currentPoint: number;
+
+  @Column()
   name: string;
-
-  @Column({ type: 'json', nullable: true })
-  userDetail: object;
-
-  @OneToMany(() => ActivityRecord, activityRecord => activityRecord.user)
-  activityRecords: ActivityRecord[];
-
-  // name: string;
-  // description: string;
-  // filename: string;
-  // views: number;
-  // isPublished: boolean;
 }
