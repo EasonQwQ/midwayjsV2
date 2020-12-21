@@ -8,6 +8,7 @@ coverage/
 dist/
 .idea/
 run/
+src/config/
 .DS_Store
 *.sw*
 *.un~
